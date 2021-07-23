@@ -22,7 +22,7 @@ yarn add strapi-provider-upload-azure-storage-blob
 
 # or
 
-npm install strapi-provider-upload-azure-storage-bloc --save
+npm install strapi-provider-upload-azure-storage-blob --save
 ```
 
 ## Usage
