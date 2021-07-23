@@ -58,7 +58,7 @@ Contributions are welcome
 
 ## Authors
 
-* **Ntegral Inc** - *Initial work* - [jakeFeldman](https://github.com/ntegral)
+* **Ntegral Inc** - *Initial work* - [Ntegral Inc.](https://github.com/ntegral)
 
 ## License
 
