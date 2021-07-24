@@ -43,12 +43,13 @@ module.exports = ({ env }) => ({
       accountKey: env('STORAGE_ACCOUNT_KEY'),
       serviceBaseURL: env('STORAGE_URL'),
       containerName: env('STORAGE_CONTAINER_NAME'),
+      connectionString: env('STORAGE_CONNECTION_STRING'),
       defaultPath: 'assets',
     }
   }
 });
 ```
-
+Either supply the `account` and `accountKey` or the `connectionString`
 `serviceBaseURL` is optional, it is useful when connecting to Azure Storage API compatible services, like the official emulator [Azurite](https://github.com/Azure/Azurite/). `serviceBaseURL` would then look like `http://localhost:10000/your-storage-account-key`.  
 When `serviceBaseURL` is not provided, default `https://${account}.blob.core.windows.net` will be used.
 

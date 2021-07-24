@@ -1,10 +1,12 @@
-import { BlobServiceClient, ContainerClient, StorageSharedKeyCredential } from '@azure/storage-blob';
+import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob';
+
 type StorageBlobConfig = {
     account: string,
     accountKey: string,
     containerName: string,
-    serviceBaseURL?: string,
-    defaultPath?: string
+    connectionString: string,
+    serviceBaseURL: string,
+    defaultPath: string
 };
 
 type StrapiFile = File & {
@@ -32,6 +34,24 @@ async function streamToBuffer(readableStream: NodeJS.ReadableStream): Promise<Bu
     });
 }
 
+const createClient = (config: StorageBlobConfig) => {
+    const account = <string>trimParam(config.account);
+    const accountKey = <string>trimParam(config.accountKey);
+    const connStr = trimParam(config.connectionString);
+
+    if (connStr) {
+        return BlobServiceClient.fromConnectionString(connStr);
+    } else if (account && accountKey) {
+        const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+        const serviceBaseURL = trimParam(config.serviceBaseURL) || `https://${account}.blob.core.windows.net`;
+        return new BlobServiceClient(serviceBaseURL, sharedKeyCredential);
+    } else {
+        throw new Error(
+            'Error in configuration, please be sure to configure the Azure account and accountKey or the connectionString.'
+          );
+    }
+}
+
 module.exports = {
     provider: 'azure-storage-blob',
     auth: {
@@ -41,6 +61,10 @@ module.exports = {
         },
         accountKey: {
             label: 'Secret Access Key',
+            type: 'text',
+        },
+        connectionString: {
+            label: 'Connection String',
             type: 'text',
         },
         containerName: {
@@ -54,15 +78,11 @@ module.exports = {
     },
 
     init: (config:StorageBlobConfig) => {
-        const account = <string>trimParam(config.account);
-        const accountKey = <string>trimParam(config.accountKey);
-        const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
-        const serviceBaseURL = trimParam(config.serviceBaseURL) || `https://${account}.blob.core.windows.net`
         const defaultPath = trimParam(config.defaultPath) || 'assets';
-        
-
-        const client = new BlobServiceClient(serviceBaseURL, sharedKeyCredential);
         const containerName = <string>trimParam(config.containerName);
+
+        const client = <BlobServiceClient>createClient(config);
+        
 
         return {
             upload(file:StrapiFile, customParams = {}){
