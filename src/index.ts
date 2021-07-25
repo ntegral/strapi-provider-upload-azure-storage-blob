@@ -1,10 +1,15 @@
-import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob';
+import { DefaultAzureCredential } from '@azure/identity';
+import { AnonymousCredential, BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob';
 
 type StorageBlobConfig = {
+    tenant: string;
+    client: string;
+    secret: string;
     account: string,
     accountKey: string,
     containerName: string,
     connectionString: string,
+    sasToken: string,
     serviceBaseURL: string,
     defaultPath: string
 };
@@ -39,11 +44,24 @@ const createClient = (config: StorageBlobConfig) => {
     const accountKey = <string>trimParam(config.accountKey);
     const connStr = trimParam(config.connectionString);
 
-    if (connStr) {
+    const tenant = <string>trimParam(config.tenant);
+    const client = <string>trimParam(config.client);
+    const secret = <string>trimParam(config.secret);
+
+    const sasToken = <string>trimParam(config.sasToken);
+
+    const serviceBaseURL = trimParam(config.serviceBaseURL) || `https://${account}.blob.core.windows.net`;
+
+    if (tenant && client && secret && account) { //Azure Active Directory
+        const defaultCredential = new DefaultAzureCredential();
+        return new BlobServiceClient(serviceBaseURL, defaultCredential);
+    } else if (sasToken) { 
+        const anonymousCredential = new AnonymousCredential();
+        return new BlobServiceClient(`${serviceBaseURL}${sasToken}`, anonymousCredential);
+    } else if (connStr) {
         return BlobServiceClient.fromConnectionString(connStr);
     } else if (account && accountKey) {
         const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
-        const serviceBaseURL = trimParam(config.serviceBaseURL) || `https://${account}.blob.core.windows.net`;
         return new BlobServiceClient(serviceBaseURL, sharedKeyCredential);
     } else {
         throw new Error(
@@ -55,8 +73,20 @@ const createClient = (config: StorageBlobConfig) => {
 module.exports = {
     provider: 'azure-storage-blob',
     auth: {
+        tenant: {
+            label: 'Azure Tenant Id',
+            type: 'text'
+        },
+        client: {
+            label: 'Azure Client Id',
+            type: 'text',
+        },
+        secret: {
+            label: 'Azure Client Secret',
+            type: 'text',
+        },
         account: {
-            lable: 'Account Name',
+            label: 'Account Name',
             type: 'text',
         },
         accountKey: {
@@ -69,6 +99,10 @@ module.exports = {
         },
         containerName: {
             label: 'Container name',
+            type: 'text',
+        },
+        sasToken: {
+            label: 'SAS Token',
             type: 'text',
         },
         defaultPath: {

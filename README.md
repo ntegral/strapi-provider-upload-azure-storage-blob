@@ -1,7 +1,7 @@
 # Strapi Provider Upload @azure/storage-blob
 Strapi provider for image uploading to Azure using @azure/storage-blob.
 
-[![NpmVersion](https://img.shields.io/npm/v/strapi-provider-upload-azure-storage-blob.svg)](https://www.npmjs.com/package/strapi-provider-upload-azure-storage-blob) [![NpmDownloads](https://img.shields.io/npm/dt/strapi-provider-upload-azure-storage-blob.svg)](https://www.npmjs.com/package/strapi-provider-upload-azure-storage)
+[![NpmVersion](https://img.shields.io/npm/v/strapi-provider-upload-azure-storage-blob.svg)](https://www.npmjs.com/package/strapi-provider-upload-azure-storage-blob) [![NpmDownloads](https://img.shields.io/npm/dt/strapi-provider-upload-azure-storage-blob.svg)](https://www.npmjs.com/package/strapi-provider-upload-azure-storage-blob)
 
 ## Getting Started
 
@@ -35,6 +35,7 @@ To enable the provider, create or edit the file at ```./config/plugins.js```.
 
 This is an example plugins.js file for Azure storage:
 ```JavaScript
+/* AZURE IDENTITY */
 module.exports = ({ env }) => ({
   upload: {
     provider: 'azure-storage-blob',
@@ -43,7 +44,44 @@ module.exports = ({ env }) => ({
       accountKey: env('STORAGE_ACCOUNT_KEY'),
       serviceBaseURL: env('STORAGE_URL'),
       containerName: env('STORAGE_CONTAINER_NAME'),
+      defaultPath: 'assets',
+    }
+  }
+});
+/* AZURE SAS TOKEN */
+module.exports = ({ env }) => ({
+  upload: {
+    provider: 'azure-storage-blob',
+    providerOptions: {
+      account: env('STORAGE_ACCOUNT'),
+      serviceBaseURL: env('STORAGE_URL'),
+      containerName: env('STORAGE_CONTAINER_NAME'),
+      defaultPath: 'assets',
+    }
+  }
+});
+/* AZURE CONNECTION STRING */
+module.exports = ({ env }) => ({
+  upload: {
+    provider: 'azure-storage-blob',
+    providerOptions: {
+      account: env('STORAGE_ACCOUNT'),
+      serviceBaseURL: env('STORAGE_URL'),
+      containerName: env('STORAGE_CONTAINER_NAME'),
       connectionString: env('STORAGE_CONNECTION_STRING'),
+      defaultPath: 'assets',
+    }
+  }
+});
+/* AZURE STORAGE CREDENTIAL */
+module.exports = ({ env }) => ({
+  upload: {
+    provider: 'azure-storage-blob',
+    providerOptions: {
+      account: env('STORAGE_ACCOUNT'),
+      accountKey: env('STORAGE_ACCOUNT_KEY'),
+      serviceBaseURL: env('STORAGE_URL'),
+      containerName: env('STORAGE_CONTAINER_NAME'),
       defaultPath: 'assets',
     }
   }
@@ -67,5 +105,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* strapi.io
-* Azure
+- [strapi.io](https://strapi.io)
+- [Azure](https://azure.microsoft.com)
