@@ -27,7 +27,74 @@ npm install strapi-provider-upload-azure-storage-blob --save
 
 ## Usage
 
-### Strapi version >= 3.0.0
+### Strapi version >= 4.0.0
+
+To enable the provider, create or edit the file at ```./config/plugins.js```.
+
+This is an example plugins.js file for Azure storage:
+```JavaScript
+/* AZURE IDENTITY */
+module.exports = ({ env }) => ({
+  upload: {
+    config: {
+      provider: 'azure-storage-blob',
+      providerOptions: {
+        account: env('STORAGE_ACCOUNT'),
+        accountKey: env('STORAGE_ACCOUNT_KEY'),
+        serviceBaseURL: env('STORAGE_URL'),
+        containerName: env('STORAGE_CONTAINER_NAME'),
+        defaultPath: 'assets',
+      }
+    }
+  }
+});
+/* AZURE SAS TOKEN */
+module.exports = ({ env }) => ({
+  upload: {
+    config: {
+      provider: 'azure-storage-blob',
+      providerOptions: {
+        account: env('STORAGE_ACCOUNT'),
+        serviceBaseURL: env('STORAGE_URL'),
+        containerName: env('STORAGE_CONTAINER_NAME'),
+        defaultPath: 'assets',
+      }
+    }
+  }
+});
+/* AZURE CONNECTION STRING */
+module.exports = ({ env }) => ({
+  upload: {
+    config: {
+      provider: 'azure-storage-blob',
+      providerOptions: {
+        account: env('STORAGE_ACCOUNT'),
+        serviceBaseURL: env('STORAGE_URL'),
+        containerName: env('STORAGE_CONTAINER_NAME'),
+        connectionString: env('STORAGE_CONNECTION_STRING'),
+        defaultPath: 'assets',
+      }
+    }
+  }
+});
+/* AZURE STORAGE CREDENTIAL */
+module.exports = ({ env }) => ({
+  upload: {
+    config: {
+      provider: 'azure-storage-blob',
+      providerOptions: {
+        account: env('STORAGE_ACCOUNT'),
+        accountKey: env('STORAGE_ACCOUNT_KEY'),
+        serviceBaseURL: env('STORAGE_URL'),
+        containerName: env('STORAGE_CONTAINER_NAME'),
+        defaultPath: 'assets',
+      }
+    }
+  }
+});
+```
+
+### Strapi version < 4.0.0 and >= 3.0.0
 
 With a stable release of Strapi 3.0.0, the configuration was moved to a JavaScript file. Official documentation [here](https://strapi.io/documentation/developer-docs/latest/development/plugins/upload.html#using-a-provider).
 
