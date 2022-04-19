@@ -38,7 +38,7 @@ This is an example plugins.js file for Azure storage:
 /* AZURE IDENTITY */
 module.exports = ({ env }) => ({
   upload: {
-    provider: 'azure-storage-blob',
+    provider: '@ntegral/strapi-provider-upload-azure-storage-blob',
     providerOptions: {
       account: env('STORAGE_ACCOUNT'),
       accountKey: env('STORAGE_ACCOUNT_KEY'),
@@ -51,7 +51,7 @@ module.exports = ({ env }) => ({
 /* AZURE SAS TOKEN */
 module.exports = ({ env }) => ({
   upload: {
-    provider: 'azure-storage-blob',
+    provider: '@ntegral/strapi-provider-upload-azure-storage-blob',
     providerOptions: {
       account: env('STORAGE_ACCOUNT'),
       serviceBaseURL: env('STORAGE_URL'),
@@ -63,7 +63,7 @@ module.exports = ({ env }) => ({
 /* AZURE CONNECTION STRING */
 module.exports = ({ env }) => ({
   upload: {
-    provider: 'azure-storage-blob',
+    provider: '@ntegral/strapi-provider-upload-azure-storage-blob',
     providerOptions: {
       account: env('STORAGE_ACCOUNT'),
       serviceBaseURL: env('STORAGE_URL'),
@@ -76,7 +76,7 @@ module.exports = ({ env }) => ({
 /* AZURE STORAGE CREDENTIAL */
 module.exports = ({ env }) => ({
   upload: {
-    provider: 'azure-storage-blob',
+    provider: '@ntegral/strapi-provider-upload-azure-storage-blob',
     providerOptions: {
       account: env('STORAGE_ACCOUNT'),
       accountKey: env('STORAGE_ACCOUNT_KEY'),
