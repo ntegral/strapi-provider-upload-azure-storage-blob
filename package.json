@@ -7,7 +7,7 @@
     }
   ],
   "name": "@ntegral/strapi-provider-upload-azure-storage-blob",
-  "version": "2.0.0",
+  "version": "2.0.4",
   "description": "Strapi provider for uploads to Azure using @azure/storage-blob",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

@@ -87,6 +87,35 @@ module.exports = ({ env }) => ({
   }
 });
 ```
+
+To enable the security for the provider, create or edit the file at ```./config/middleware.js```.
+```Javascript
+module.exports = ({ env }) => [
+  'strapi::errors',
+  {
+    name: 'strapi::security',
+    config: {
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          'connect-src': ["'self'", 'https:'],
+          'img-src': ["'self'", 'data:', 'blob:', `https://${env('STORAGE_ACCOUNT')}.blob.core.windows.net`],
+          'media-src': ["'self'", 'data:', 'blob:', `https://${env('STORAGE_ACCOUNT')}.blob.core.windows.net`],
+          upgradeInsecureRequests: null,
+        },
+      },
+    },
+  },
+  'strapi::cors',
+  'strapi::poweredBy',
+  'strapi::logger',
+  'strapi::query',
+  'strapi::body',
+  'strapi::session',
+  'strapi::favicon',
+  'strapi::public',
+];
+```
 Either supply the `account` and `accountKey` or the `connectionString`
 `serviceBaseURL` is optional, it is useful when connecting to Azure Storage API compatible services, like the official emulator [Azurite](https://github.com/Azure/Azurite/). `serviceBaseURL` would then look like `http://localhost:10000/your-storage-account-key`.  
 When `serviceBaseURL` is not provided, default `https://${account}.blob.core.windows.net` will be used.
