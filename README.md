@@ -9,27 +9,27 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* Node 10+
+* Node 14+
 * npm 6+
-* strapi@3.0.0-beta.16+
+* strapi@4
 
 ### Installing
 
 Inside your strapi project run the following
 
 ```sh
-yarn add strapi-provider-upload-azure-storage-blob
+yarn add @ntegral/strapi-provider-upload-azure-storage-blob
 
 # or
 
-npm install strapi-provider-upload-azure-storage-blob --save
+npm install @ntegral/strapi-provider-upload-azure-storage-blob --save
 ```
 
 ## Usage
 
-### Strapi version >= 3.0.0
+### Strapi version >= 4.0.0
 
-With a stable release of Strapi 3.0.0, the configuration was moved to a JavaScript file. Official documentation [here](https://strapi.io/documentation/developer-docs/latest/development/plugins/upload.html#using-a-provider).
+With a stable release of Strapi 4.0.0, the configuration was moved to a JavaScript file. Official documentation [here](https://strapi.io/documentation/developer-docs/latest/development/plugins/upload.html#using-a-provider).
 
 To enable the provider, create or edit the file at ```./config/plugins.js```.
 

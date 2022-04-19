@@ -127,7 +127,7 @@ module.exports = {
                     const blobClient = containerClient.getBlockBlobClient(`${defaultPath}/${file.name}`);
 
                     // set mimetype as determined from browser with file upload control
-                    const options = { blobHTTPHeaders: { blobContentType: file.type, ...customParams, } };
+                    const options = { blobHTTPHeaders: { blobContentType: file.mime, ...customParams, } };
 
                     // upload file
                     const result = await blobClient.uploadData(file,options);

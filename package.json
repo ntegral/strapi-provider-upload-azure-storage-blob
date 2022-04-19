@@ -6,8 +6,8 @@
       "url": "https://www.ntegral.com"
     }
   ],
-  "name": "strapi-provider-upload-azure-storage-blob",
-  "version": "1.0.5",
+  "name": "@ntegral/strapi-provider-upload-azure-storage-blob",
+  "version": "2.0.0",
   "description": "Strapi provider for uploads to Azure using @azure/storage-blob",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
@@ -26,10 +26,10 @@
   "author": "Dexter Hardy",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.3.5"
+    "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@azure/identity": "^1.5.0",
-    "@azure/storage-blob": "^12.6.0"
+    "@azure/identity": "^2.0.4",
+    "@azure/storage-blob": "^12.9.0"
   }
 }
