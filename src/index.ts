@@ -119,34 +119,71 @@ module.exports = {
         
 
         return {
+            uploadStream(file: StrapiFile, customParams = {}) {
+                return new Promise<void>(async(resolve,reject) => {
+                    try {
+                        const containerClient = client.getContainerClient(containerName);
+                        // create blobClient for container
+                        const blobClient = containerClient.getBlockBlobClient(`${defaultPath}/${file.name}`);
+                        // set mimetype as determined from browser with file upload control
+                        const options = { blobHTTPHeaders: { blobContentType: file.mime, ...customParams, } };
+
+                        // convert stream to buffer
+                        const bufferedStream = await streamToBuffer(file.stream as any)
+                        // upload file
+                        await blobClient.uploadData(bufferedStream, options);
+                        // console.log(result)
+                        file.url = blobClient.url;
+                        resolve();
+                    } catch (error) {
+                        reject(error)
+                    }
+                })
+            },
             upload(file:StrapiFile, customParams = {}){
                 return new Promise<void>(async(resolve,reject) => {
-                    const containerClient = client.getContainerClient(containerName);
+                    try {
+                      const containerClient =
+                        client.getContainerClient(containerName);
 
-                    // create blobClient for container
-                    const blobClient = containerClient.getBlockBlobClient(`${defaultPath}/${file.name}`);
+                      // create blobClient for container
+                      const blobClient = containerClient.getBlockBlobClient(
+                        `${defaultPath}/${file.name}`
+                      );
 
-                    // set mimetype as determined from browser with file upload control
-                    const options = { blobHTTPHeaders: { blobContentType: file.mime, ...customParams, } };
+                      // set mimetype as determined from browser with file upload control
+                      const options = {
+                        blobHTTPHeaders: {
+                          blobContentType: file.mime,
+                          ...customParams,
+                        },
+                      };
 
-                    // upload file
-                    const result = await blobClient.uploadData(file,options);
-                    
-                    file.url = blobClient.url;
-                    resolve();
+                      // upload file
+                      const result = await blobClient.uploadData(file, options);
+
+                      file.url = blobClient.url;
+                      resolve();
+                    } catch (error) {
+                      reject(error);
+                    }
                 })
 
             },
             delete(file:StrapiFile, customParams = {}){
                 return new Promise<void>(async(resolve,reject) => {
-                    const containerClient = client.getContainerClient(containerName);
+                    try {
+                        const containerClient = client.getContainerClient(containerName);
 
-                    // create blobClient for container
-                    const blobClient = containerClient.getBlobClient(`${defaultPath}/${file.name}`);
+                        // create blobClient for container
+                        const blobClient = containerClient.getBlobClient(`${defaultPath}/${file.name}`);
 
-                    await blobClient.delete();
-                    file.url = blobClient.url;
-                    resolve();
+                        await blobClient.delete();
+                        file.url = blobClient.url;
+                        resolve();
+                    } catch (error) {
+                        reject(error)
+                    }
                 })
             }
         }
